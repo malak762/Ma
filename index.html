@@ -22,46 +22,40 @@
       width: 100%;
       height: 100%;
       top: 0;
-    }
-
-    /* Styling for the header (title and logo) */
-    #header {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      z-index: 1000;
-      background-color: rgba(255, 255, 255, 0.8); /* semi-transparent background */
-      padding: 10px;
-      border-radius: 5px;
-      display: flex;
-      align-items: center;
-      font-family: Arial, sans-serif;
-    }
-
-    /* Styling for the title */
-    #header h1 {
-      font-size: 18px;
-      margin: 0;
-      margin-left: 10px;
-    }
-
-    /* Styling for the logo */
-    #header img {
-      height: 40px; /* Adjust size of logo as needed */
-      width: auto;
-    }
-  </style>
+   }
+        .header {
+            background-color: #007BFF; /* لون أزرق */
+            color: white;
+            padding:40px;
+            display: flex;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            
+        }
+        .header img {
+            max-height: 40px; /* حجم الصورة */
+            margin-right: 100px;
+        }
+         .header h1 {
+            margin: 0;
+        }
+        .content {
+            padding-top: 120px; /* إضافة مساحة كافية أعلى المحتوى لتجنب التداخل مع الهيدر الثابت */
+        }
+    </style>
+    
 </head>
-
-<body>
-  <!-- Header with title and logo -->
-  <div id="header">
-    <img src="https://www.birzeit.edu/sites/default/files/bzu-logo-en_2.png" alt="Birzeit University Logo" />
-    <h1>Ramallah Waste Containers</h1>
-  </div>
-
-  <!-- Map container -->
-  <div id="map"></div>
+    <body>
+        <div class="header">
+        <img src="https://www.marefa.org/w/images/thumb/1/16/Birzeit_University_logo.svg/600px-Birzeit_University_logo.svg.png" alt="Birzeit University Logo">
+        <h1>Mapping Emergency Centers in Ramallah city</h1>
+    </div>
+    <div class="content">
+    <!-- Map container -->
+    <div id="map"></div>
 
   <!-- Leaflet and jQuery libraries -->
   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
