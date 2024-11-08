@@ -22,40 +22,95 @@
       width: 100%;
       height: 100%;
       top: 0;
-   }
-        .header {
-            background-color: #ffca33; /*لون أصفر */
-            color: black;
-            padding:10px;
-            display: flex;
-            align-items: center;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            
-        }
-        .header img {
-            max-height: 40px; /* حجم الصورة */
-            margin-right: 100px;
-        }
-         .header h1 {
-            margin: 0;
-        }
-        .content {
-            padding-top: 120px; /* إضافة مساحة كافية أعلى المحتوى لتجنب التداخل مع الهيدر الثابت */
-        }
-    </style>
-    
+    }
+
+    /* Styling for the header (title and logo) */
+    .header {
+      background-color: #ffca33; /* لون أصفر */
+      color: black;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .header img {
+      max-height: 40px; /* حجم الصورة */
+      margin-right: 100px;
+    }
+
+    .header h1 {
+      margin: 0;
+    }
+
+    /* Adjust map content position to avoid overlap with header */
+    .content {
+      padding-top: 70px;
+    }
+
+    /* Styling for the map legend */
+    #legend {
+      position: fixed;
+      bottom: 30px;
+      left: 10px;
+      z-index: 1000;
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 10px;
+      border-radius: 5px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      color: black;
+    }
+
+    #legend .legend-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    #legend .color-box {
+      width: 15px;
+      height: 15px;
+      margin-right: 5px;
+    }
+
+    /* Colors for legend */
+    .zone-color {
+      background-color: yellow;
+    }
+
+    .waste-container-color {
+      background-color: orange;
+    }
+  </style>
 </head>
-    <body>
-        <div class="header">
-        <img src="https://www.dci.plo.ps/files/image/plo_pic/BZU_Logo.png" alt="Birzeit University Logo">
-        <h1>Ramallah Waste Containers</h1>
-    </div>
-    <div class="content">
-    <!-- Map container -->
+
+<body>
+  <!-- Header with title and logo -->
+  <div class="header">
+    <img src="https://www.dci.plo.ps/files/image/plo_pic/BZU_Logo.png" alt="Birzeit University Logo">
+    <h1>Ramallah Waste Containers</h1>
+  </div>
+
+  <!-- Map container -->
+  <div class="content">
     <div id="map"></div>
+  </div>
+
+  <!-- Legend container -->
+  <div id="legend">
+    <div class="legend-item">
+      <div class="color-box zone-color"></div>
+      <span>Zones</span>
+    </div>
+    <div class="legend-item">
+      <div class="color-box waste-container-color"></div>
+      <span>Waste Containers</span>
+    </div>
+  </div>
 
   <!-- Leaflet and jQuery libraries -->
   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
@@ -140,4 +195,5 @@
     });
   </script>
 </body>
+
 </html>
