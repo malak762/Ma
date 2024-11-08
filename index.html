@@ -70,10 +70,21 @@
           };
          },
         onEachFeature: function(feature, layer) {
-          layer.on('click', function(e) {
-             alert("Zone: " + feature.properties.NAME_ENGLI + "\nMAIL_CODE: " + feature.properties.MAIL_CODE);
-          });
-        }
+  // Create popup content for zones
+  const popupContent = `
+    <b>Zone:</b> ${feature.properties.NAME_ENGLI}<br>
+    <b>Mail Code:</b> ${feature.properties.MAIL_CODE}
+  `;
+  layer.bindPopup(popupContent);
+}
+onEachFeature: function(feature, layer) {
+  // Create popup content for waste containers
+  const popupContent = `
+    <b>Type of Waste:</b> ${feature.properties.TYPE_OF_WA}
+  `;
+  layer.bindPopup(popupContent);
+}
+
       }).addTo(map);
     });
 
