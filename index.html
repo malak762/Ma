@@ -53,7 +53,7 @@
     // Define layer variables
     let zonesLayer, wasteContainersLayer;
 
-    // Load Zones GeoJSON data and define zonesLayer
+    // Load Zones GeoJSON data and define zonesLayer with popups
     $.getJSON("RamallahZones.json", function(RZ) {
       zonesLayer = L.geoJson(RZ, {
         style: function(feature) {
@@ -66,16 +66,27 @@
           };
         },
         onEachFeature: function(feature, layer) {
-          layer.on('click', function(e) {
-            alert("Zone: " + feature.properties.NAME_ENGLI + "\nMAIL_CODE: " + feature.properties.MAIL_CODE);
-          });
+          // Create popup content for zones
+          const popupContent = `
+            <b>Zone:</b> ${feature.properties.NAME_ENGLI}<br>
+            <b>Mail Code:</b> ${feature.properties.MAIL_CODE}
+          `;
+          layer.bindPopup(popupContent);
         }
       });
-      // Add zones layer to the map
+      // Add zones layer to the map by default
       zonesLayer.addTo(map);
+
+      // Define layers for control
+      const overlays = {
+        "Zones": zonesLayer
+      };
+
+      // Add layer control (Zones only until wasteContainersLayer is loaded)
+      L.control.layers(null, overlays).addTo(map);
     });
 
-    // Load Waste Containers GeoJSON data and define wasteContainersLayer
+    // Load Waste Containers GeoJSON data and define wasteContainersLayer with popups
     $.getJSON("wasteContainer.json", function(WC) {
       wasteContainersLayer = L.geoJson(WC, {
         pointToLayer: function(feature, latlng) {
@@ -89,24 +100,30 @@
           });
         },
         onEachFeature: function(feature, layer) {
-          layer.on('click', function(e) {
-            alert("Type: " + feature.properties.TYPE_OF_WA);
-          });
+          // Create popup content for waste containers
+          const popupContent = `
+            <b>Type of Waste:</b> ${feature.properties.TYPE_OF_WA}
+          `;
+          layer.bindPopup(popupContent);
         }
       });
-      // Add waste containers layer to the map
+      // Add waste containers layer to the map by default
       wasteContainersLayer.addTo(map);
-    });
 
-    // Define layers for control
-    const baseLayers = {};
-    const overlays = {
-      "Zones": zonesLayer,
-      "Waste Containers": wasteContainersLayer
-    };
-
-    // Wait for both layers to load, then add layer control
-    $.when($.getJSON("RamallahZones.json"), $.getJSON("wasteContainer.json")).done(function() {
-      L.control.layers(baseLayers, overlays).addTo(map);
+      // Update overlays to include wasteContainersLayer and update control
+      const overlays = {
+        "Zones": zonesLayer,
+        "Waste Containers": wasteContainersLayer
+      };
+      
+      // Clear existing controls and add updated control
+      map.eachLayer(function(layer) {
+        if (layer.options && layer.options.attribution) {
+          map.removeControl(layer);
+        }
+      });
+      L.control.layers(null, overlays).addTo(map);
     });
   </script>
+</body>
+</html>
