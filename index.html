@@ -1,65 +1,96 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="utf-8" />
-
-  <!-- Give the page a title -->
   <title>Ramallah Waste Containers</title>
 
-  <!-- Add a link to the Leaflet CSS library so you can reference it for styling your map -->
+  <!-- Leaflet CSS for map styling -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
 
-  <!-- All the CSS code goes inside the style tags below -->
   <style>
-    /* style the body */
+    /* Basic styling for body and map */
     body {
-      margin: 0px;
+      margin: 0;
       height: 100%;
       width: 100%;
     }
 
-    /* style the map */
+    /* Styling for the map */
     #map {
       position: absolute;
       width: 100%;
-      top: 0px;
-      bottom: 0;
+      height: 100%;
+      top: 0;
+    }
+
+    /* Styling for the header (title and logo) */
+    #header {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+      background-color: rgba(255, 255, 255, 0.8); /* semi-transparent background */
+      padding: 10px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Styling for the title */
+    #header h1 {
+      font-size: 18px;
+      margin: 0;
+      margin-left: 10px;
+    }
+
+    /* Styling for the logo */
+    #header img {
+      height: 40px; /* Adjust size of logo as needed */
+      width: auto;
     }
   </style>
 </head>
 
 <body>
-  <!-- the map -->
+  <!-- Header with title and logo -->
+  <div id="header">
+    <img src="https://www.birzeit.edu/sites/default/files/bzu-logo-en_2.png" alt="Birzeit University Logo" />
+    <h1>Ramallah Waste Containers</h1>
+  </div>
+
+  <!-- Map container -->
   <div id="map"></div>
 
-  <!-- Add a link to the Leaflet JavaScript library so you can reference it for building your map -->
+  <!-- Leaflet and jQuery libraries -->
   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
-
-  <!-- Add a link to the jQuery JavaScript library so you can leverage ajax methods to load your data -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-  <!-- All JavaScript goes inside the script tags below -->
   <script>
-    // define map options
+    // Map options
     const mapOptions = {
-      zoomSnap: 0.5,  // this allows fractional zooming
-      center: [31.9045, 35.2045], // center the map on the coordinates for Ramallah
-      zoom: 17.5, // set the initial zoom
+      zoomSnap: 0.5,
+      center: [31.9045, 35.2045],
+      zoom: 17.5,
     };
 
-    // define the map with the options above
+    // Initialize map
     const map = L.map("map", mapOptions);
-   
-   // add a base map to the map
-   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-   subdomains: 'abcd',
-   maxZoom: 20
- }).addTo(map);
-// use jquery to load GeoJSON data
 
+    // Add base layer map
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 20
+    }).addTo(map);
+
+    // Define layer variables
+    let zonesLayer, wasteContainersLayer;
+
+    // Load Zones GeoJSON data and define zonesLayer with popups
     $.getJSON("RamallahZones.json", function(RZ) {
-      L.geoJson(RZ, {
+      zonesLayer = L.geoJson(RZ, {
         style: function(feature) {
           return {
             fillColor: "yellow",
@@ -68,7 +99,7 @@
             weight: 1.0,
             opacity: 0.7
           };
-         },
+        },
         onEachFeature: function(feature, layer) {
           // Create popup content for zones
           const popupContent = `
@@ -77,14 +108,14 @@
           `;
           layer.bindPopup(popupContent);
         }
-
-      }).addTo(map);
+      });
+      // Add zones layer to the map
+      zonesLayer.addTo(map);
     });
 
-
-    
+    // Load Waste Containers GeoJSON data and define wasteContainersLayer with popups
     $.getJSON("wasteContainer.json", function(WC) {
-      L.geoJson(WC, {
+      wasteContainersLayer = L.geoJson(WC, {
         pointToLayer: function(feature, latlng) {
           return L.circleMarker(latlng, {
             radius: 5,
@@ -102,20 +133,17 @@
           `;
           layer.bindPopup(popupContent);
         }
-      }).addTo(map);
+      });
+      // Add waste containers layer to the map
+      wasteContainersLayer.addTo(map);
+
+      // Add layer control with both layers once both are loaded
+      const overlays = {
+        "Zones": zonesLayer,
+        "Waste Containers": wasteContainersLayer
+      };
+      L.control.layers(null, overlays).addTo(map);
     });
-       // Add layers to map with control options
-    const baseLayers = {};
-    const overlays = {
-      "Zones": zonesLayer,
-      "Waste Containers": wasteContainersLayer
-    };
-
-    // Add layer control to the map
-    L.control.layers(baseLayers, overlays).addTo(map);
-
-    // Add both layers to the map by default
-    zonesLayer.addTo(map);
-    wasteContainersLayer.addTo(map);</script>
-
- 
+  </script>
+</body>
+</html>
