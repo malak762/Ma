@@ -71,10 +71,15 @@
       margin-bottom: 5px;
     }
 
-    #legend .color-box {
+    #legend .color-box, #legend .icon-box {
       width: 15px;
       height: 15px;
       margin-right: 5px;
+    }
+
+    #legend .icon-box img {
+      width: 15px; /* حجم الأيقونة في المفتاح */
+      height: 15px;
     }
   </style>
 </head>
@@ -98,7 +103,9 @@
       <span>Zones</span>
     </div>
     <div class="legend-item">
-      <div class="color-box" style="background-color: orange;"></div>
+      <div class="icon-box">
+        <img src="https://e7.pngegg.com/pngimages/452/520/png-clipart-waste-park-information-tasty-lane-organization-trash-miscellaneous-text.png" alt="Waste Container Icon">
+      </div>
       <span>Waste Containers</span>
     </div>
   </div>
@@ -125,11 +132,10 @@
       maxZoom: 20
     }).addTo(map);
 
-  
-
+    // Define custom icon for waste containers
     const wasteContainerIcon = L.icon({
       iconUrl: 'https://e7.pngegg.com/pngimages/452/520/png-clipart-waste-park-information-tasty-lane-organization-trash-miscellaneous-text.png', // ضع رابط الأيقونة هنا
-      iconSize: [10, 10],
+      iconSize: [25, 25],
       iconAnchor: [12, 25],
       popupAnchor: [0, -25]
     });
@@ -137,9 +143,6 @@
     // Load Zones GeoJSON data and define zonesLayer with popups
     $.getJSON("RamallahZones.json", function(RZ) {
       zonesLayer = L.geoJson(RZ, {
-        pointToLayer: function(feature, latlng) {
-          return L.marker(latlng, { icon: zoneIcon });
-        },
         style: function(feature) {
           return {
             fillColor: "yellow",
