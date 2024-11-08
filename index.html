@@ -109,14 +109,14 @@
       "Waste Containers": wasteContainersLayer 
     }; 
  
-     // التحكم بالطبقات
-    const overlays = {
-      "المناطق": zonesLayer,
-      "حاويات النفايات": wasteContainersLayer
-    };
     // Add layer control to the map 
     L.control.layers(baseLayers, overlays).addTo(map); 
  
     // Add both layers to the map by default 
     zonesLayer.addTo(map); 
+   // التحكم بالطبقات
+    const overlays = {
+      "المناطق": zonesLayer,
+      "حاويات النفايات": wasteContainersLayer
+    };
     wasteContainersLayer.addTo(map);</html>
