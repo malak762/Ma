@@ -63,6 +63,15 @@
       font-family: Arial, sans-serif;
       font-size: 14px;
       color: black;
+      width: 150px;
+    }
+
+    /* Styling for the legend title */
+    #legend h3 {
+      margin: 0;
+      font-size: 16px;
+      text-align: center;
+      margin-bottom: 10px;
     }
 
     #legend .legend-item {
@@ -78,7 +87,7 @@
     }
 
     #legend .icon-box img {
-      width: 15px; /* حجم الأيقونة في المفتاح */
+      width: 15px;
       height: 15px;
     }
   </style>
@@ -96,8 +105,9 @@
     <div id="map"></div>
   </div>
 
-  <!-- Legend container -->
+  <!-- Legend container with title -->
   <div id="legend">
+    <h3>Legend</h3>
     <div class="legend-item">
       <div class="color-box" style="background-color: yellow;"></div>
       <span>Zones</span>
