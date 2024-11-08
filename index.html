@@ -74,8 +74,16 @@
           layer.bindPopup(popupContent);
         }
       });
-      // Add zones layer to the map
+      // Add zones layer to the map by default
       zonesLayer.addTo(map);
+
+      // Define layers for control
+      const overlays = {
+        "Zones": zonesLayer
+      };
+
+      // Add layer control (Zones only until wasteContainersLayer is loaded)
+      L.control.layers(null, overlays).addTo(map);
     });
 
     // Load Waste Containers GeoJSON data and define wasteContainersLayer with popups
@@ -99,20 +107,22 @@
           layer.bindPopup(popupContent);
         }
       });
-      // Add waste containers layer to the map
+      // Add waste containers layer to the map by default
       wasteContainersLayer.addTo(map);
-    });
 
-    // Define layers for control
-    const baseLayers = {};
-    const overlays = {
-      "Zones": zonesLayer,
-      "Waste Containers": wasteContainersLayer
-    };
-
-    // Wait for both layers to load, then add layer control
-    $.when($.getJSON("RamallahZones.json"), $.getJSON("wasteContainer.json")).done(function() {
-      L.control.layers(baseLayers, overlays).addTo(map);
+      // Update overlays to include wasteContainersLayer and update control
+      const overlays = {
+        "Zones": zonesLayer,
+        "Waste Containers": wasteContainersLayer
+      };
+      
+      // Clear existing controls and add updated control
+      map.eachLayer(function(layer) {
+        if (layer.options && layer.options.attribution) {
+          map.removeControl(layer);
+        }
+      });
+      L.control.layers(null, overlays).addTo(map);
     });
   </script>
 </body>
