@@ -125,17 +125,11 @@
       maxZoom: 20
     }).addTo(map);
 
-    // Define custom icons for each layer
-    const zoneIcon = L.icon({
-      iconUrl: 'https://example.com/path/to/zone-icon.png', // ضع رابط الأيقونة هنا
-      iconSize: [30, 30], // حجم الأيقونة
-      iconAnchor: [15, 30], // موقع النقطة التي ستثبّت بها الأيقونة
-      popupAnchor: [0, -30] // موقع النافذة المنبثقة بالنسبة للأيقونة
-    });
+  
 
     const wasteContainerIcon = L.icon({
       iconUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbHa0Bv0tw-ojfmC-68xrppstsUg1UgyTESWqb363NNJBBrZ4mRlUUkyHSaDFryXTQf4E&usqp=CAU', // ضع رابط الأيقونة هنا
-      iconSize: [25, 25],
+      iconSize: [10, 10],
       iconAnchor: [12, 25],
       popupAnchor: [0, -25]
     });
