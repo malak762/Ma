@@ -98,7 +98,6 @@
             alert("type: " + feature.properties.TYPE_OF_WA); 
           }); 
         } 
-        
  
       }).addTo(map); 
     }); 
@@ -114,12 +113,5 @@
  
     // Add both layers to the map by default 
     zonesLayer.addTo(map); 
-   // التحكم بالطبقات
-    const overlays = {
-      "المناطق": zonesLayer,
-      "حاويات النفايات": wasteContainersLayer
-    };
-    wasteContainersLayer.addTo(map);
-   </script>
-</body>
-</html>
+    wasteContainersLayer.addTo(map);</html>
+
