@@ -26,7 +26,7 @@
 
     /* Styling for the header (title and logo) */
     .header {
-      background-color: #ffca33; /* لون أصفر */
+      background-color: #ffca33;
       color: black;
       padding: 10px;
       display: flex;
@@ -38,7 +38,7 @@
     }
 
     .header img {
-      max-height: 40px; /* حجم الصورة */
+      max-height: 40px;
       margin-right: 100px;
     }
 
@@ -76,15 +76,6 @@
       height: 15px;
       margin-right: 5px;
     }
-
-    /* Colors for legend */
-    .zone-color {
-      background-color: yellow;
-    }
-
-    .waste-container-color {
-      background-color: orange;
-    }
   </style>
 </head>
 
@@ -103,11 +94,11 @@
   <!-- Legend container -->
   <div id="legend">
     <div class="legend-item">
-      <div class="color-box zone-color"></div>
+      <div class="color-box" style="background-color: yellow;"></div>
       <span>Zones</span>
     </div>
     <div class="legend-item">
-      <div class="color-box waste-container-color"></div>
+      <div class="color-box" style="background-color: orange;"></div>
       <span>Waste Containers</span>
     </div>
   </div>
@@ -134,12 +125,27 @@
       maxZoom: 20
     }).addTo(map);
 
-    // Define layer variables
-    let zonesLayer, wasteContainersLayer;
+    // Define custom icons for each layer
+    const zoneIcon = L.icon({
+      iconUrl: 'https://example.com/path/to/zone-icon.png', // ضع رابط الأيقونة هنا
+      iconSize: [30, 30], // حجم الأيقونة
+      iconAnchor: [15, 30], // موقع النقطة التي ستثبّت بها الأيقونة
+      popupAnchor: [0, -30] // موقع النافذة المنبثقة بالنسبة للأيقونة
+    });
+
+    const wasteContainerIcon = L.icon({
+      iconUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbHa0Bv0tw-ojfmC-68xrppstsUg1UgyTESWqb363NNJBBrZ4mRlUUkyHSaDFryXTQf4E&usqp=CAU', // ضع رابط الأيقونة هنا
+      iconSize: [25, 25],
+      iconAnchor: [12, 25],
+      popupAnchor: [0, -25]
+    });
 
     // Load Zones GeoJSON data and define zonesLayer with popups
     $.getJSON("RamallahZones.json", function(RZ) {
       zonesLayer = L.geoJson(RZ, {
+        pointToLayer: function(feature, latlng) {
+          return L.marker(latlng, { icon: zoneIcon });
+        },
         style: function(feature) {
           return {
             fillColor: "yellow",
@@ -150,7 +156,6 @@
           };
         },
         onEachFeature: function(feature, layer) {
-          // Create popup content for zones
           const popupContent = `
             <b>Zone:</b> ${feature.properties.NAME_ENGLI}<br>
             <b>Mail Code:</b> ${feature.properties.MAIL_CODE}
@@ -158,7 +163,6 @@
           layer.bindPopup(popupContent);
         }
       });
-      // Add zones layer to the map
       zonesLayer.addTo(map);
     });
 
@@ -166,24 +170,15 @@
     $.getJSON("wasteContainer.json", function(WC) {
       wasteContainersLayer = L.geoJson(WC, {
         pointToLayer: function(feature, latlng) {
-          return L.circleMarker(latlng, {
-            radius: 5,
-            fillColor: "orange",
-            color: "orange",
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 0.8
-          });
+          return L.marker(latlng, { icon: wasteContainerIcon });
         },
         onEachFeature: function(feature, layer) {
-          // Create popup content for waste containers
           const popupContent = `
             <b>Type of Waste:</b> ${feature.properties.TYPE_OF_WA}
           `;
           layer.bindPopup(popupContent);
         }
       });
-      // Add waste containers layer to the map
       wasteContainersLayer.addTo(map);
 
       // Add layer control with both layers once both are loaded
